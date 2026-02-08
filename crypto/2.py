@@ -19,12 +19,6 @@ def decrypt(text: str, shift: int) -> str:
         return ch
     return ''.join(shift_char(c) for c in text)
 
-def bruteforce_all(text: str) -> list:
-    """
-    Returns a list of tuples (shift, candidate_plaintext) for all 26 shifts,
-    helpful when you don't know the key.
-    """
-    return [(s, decrypt(text, s)) for s in range(ALPHABET_LEN)]
 
 def main():
     ciphertext = r"""Kf xzcu ivwzevu xfcu kf grzek kyv czcp
