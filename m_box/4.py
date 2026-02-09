@@ -37,7 +37,13 @@ class alpha:
         return self.cadenas
     def get_real_and_compare(self, dict_of_value):
         global hit, miss
+        # for i in dict_of_value:
+        #     if self.bits_backup[i] == dict_of_value[i]:
+        #         hit += 1
+        #     else:
+        #         miss += 1
         for i in dict_of_value:
+            print(f"pos {i}: bit A: {self.bits_backup[i]}, bit B: {dict_of_value[i]} = {self.bits_backup[i] == dict_of_value[i]}")
             if self.bits_backup[i] == dict_of_value[i]:
                 hit += 1
             else:
