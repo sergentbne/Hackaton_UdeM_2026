@@ -16,12 +16,15 @@ def compare_word_letters(a: str, b: str):
       where are_equal is True when the letter counts match.
     """
     # keep only letters and lowercase them
-    clean = lambda s: re.sub(r'[^A-Za-z]', '', s).lower()
+    clean = lambda s: re.sub(r"[^A-Za-z]", "", s).lower()
     ca = Counter(clean(a))
     cb = Counter(clean(b))
     return ca == cb
 
-with open("/Users/louis/prog/Hackaton_UdeM_2026/crypto/French-Dictionary/dictionary/dictionary.csv") as c:
+
+with open(
+    "/Users/louis/prog/Hackaton_UdeM_2026/crypto/French-Dictionary/dictionary/dictionary.csv"
+) as c:
     reader = csv.reader(c)
     reader = list(reader)
     reader = [str(x) for inner in reader for x in inner]
@@ -31,5 +34,3 @@ with open("/Users/louis/prog/Hackaton_UdeM_2026/crypto/French-Dictionary/diction
         a = [inner for inner in tqdm.tqdm(a) if len(inner) == len(i)]
         a = [inner for inner in a if compare_word_letters(i, inner)]
         print(a)
-        
-

@@ -21,4 +21,3 @@ for i in numb:
 
 total.append(one_zero)
 print(total)
-

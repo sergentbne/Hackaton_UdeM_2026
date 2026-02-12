@@ -12,4 +12,3 @@ for pos, _ in enumerate(a[0]):
         numb.append(pos)
 
 print(numb)
-

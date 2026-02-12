@@ -1,16 +1,18 @@
 def randomfunc():
     import random
+
     random.seed()
     global miss, hit, randomval
-    miss = 0        
+    miss = 0
     hit = 0
-    randomval= 0
+    randomval = 0
+
     class alpha:
         instances = []
+
         def __init__(self):
             alpha.instances.append(self)
-            with open("input_level_4.txt","r") as f:
-
+            with open("input_level_4.txt", "r") as f:
                 n = int(f.readline())
                 a = []
                 for _ in range(n):
@@ -20,33 +22,37 @@ def randomfunc():
                 self.bits = a[0]
                 self.bits_backup = self.bits.copy()
                 self.cadenas = a[1]
-            
+
         def check_cadenas(self, cadenas_externe):
             list_of_good = []
             for pos, i in enumerate(cadenas_externe):
                 if i == self.cadenas[pos]:
-                   list_of_good.append(True) 
+                    list_of_good.append(True)
                 else:
                     list_of_good.append(False)
             for pos, i in enumerate(list_of_good):
                 if i:
                     list_of_good[pos] = self.bits[pos]
                 else:
-                    numb = str(random.randint(0,1))
-                    list_of_good[pos] = numb 
+                    numb = str(random.randint(0, 1))
+                    list_of_good[pos] = numb
             self.bits = list_of_good.copy()
-            return self.bits 
+            return self.bits
+
         def get_cadenas(self):
             return self.cadenas
+
         def get_real_and_compare(self, dict_of_value):
-            max_value = len(dict_of_value)/2
+            max_value = len(dict_of_value) / 2
             # for i in dict_of_value:
             #     if self.bits_backup[i] == dict_of_value[i]:
             #         hit += 1
             #     else:
             #         miss += 1
             for pos, i in enumerate(dict_of_value):
-                print(f"pos {i}: bit A: {self.bits_backup[i]}, bit B: {dict_of_value[i]} = {self.bits_backup[i] == dict_of_value[i]}")
+                print(
+                    f"pos {i}: bit A: {self.bits_backup[i]}, bit B: {dict_of_value[i]} = {self.bits_backup[i] == dict_of_value[i]}"
+                )
                 if pos > max_value:
                     continue
                 if self.bits_backup[i] == dict_of_value[i]:
@@ -56,16 +62,17 @@ def randomfunc():
                     global miss
                     miss += 1
 
-
     class sigma:
         instances = []
+
         def __init__(self):
             sigma.instances.append(self)
             self.alpha = None
+
         def guess(self):
-            self.cadenas = [random.randint(0,1) for i in range(83)]
+            self.cadenas = [random.randint(0, 1) for i in range(83)]
             self.cadenas = ["Σ" if x == 0 else "ε" for x in self.cadenas]
-                
+
             good_guess_alpha = {}
             for a in alpha.instances:
                 bits = a.check_cadenas(self.cadenas)
@@ -79,18 +86,20 @@ def randomfunc():
             #
             #             if ii == self.cadenas[pos]:
             #                  good_guess_beta[pos] = bits[pos]
+
         def final_check(self):
             for a in alpha.instances:
                 a.get_real_and_compare(beta.instances[0].get_good_guess())
-            print(f"{hit=}, {miss=}: sigma a affecte {miss/(hit+miss)*100:.2f}%")
+            print(f"{hit=}, {miss=}: sigma a affecte {miss / (hit + miss) * 100:.2f}%")
             global randomval
-            randomval = miss/(hit+miss)
+            randomval = miss / (hit + miss)
 
     class beta:
         instances = []
+
         def __init__(self, a: alpha):
             beta.instances.append(self)
-            self.cadenas = [random.randint(0,1) for i in range(83)]
+            self.cadenas = [random.randint(0, 1) for i in range(83)]
             self.cadenas = ["Σ" if x == 0 else "ε" for x in self.cadenas]
             self.intercept()
             self.bits = a.check_cadenas(self.cadenas)
@@ -100,26 +109,29 @@ def randomfunc():
                 if i == self.cadenas[pos]:
                     self.good_guess[pos] = self.bits[pos]
             self.check()
+
         def get_cadenas(self):
             return self.cadenas
+
         def get_good_guess(self):
             return self.good_guess
+
         def check(self):
             for i in sigma.instances:
                 i.final_check()
+
         def intercept(self):
             for i in sigma.instances:
                 i.guess()
-
-    
 
     a = alpha()
     o = sigma()
     b = beta(a)
     return randomval
+
+
 total = 0
 n = 1000
 for _ in range(n):
     total += int(bool(randomfunc()))
-print(f"{total/n:.3f}% de detecte en moyenne")
-
+print(f"{total / n:.3f}% de detecte en moyenne")
